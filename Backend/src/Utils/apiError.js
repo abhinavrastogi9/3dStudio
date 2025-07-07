@@ -1,5 +1,5 @@
 class apiError extends Error {
-  constructor(status, message, error = [], stack) {
+  constructor(status, message , error = [], stack) {
     super(message);
     this.status = status || 500;
     this.message = message || "Internal Server Error";

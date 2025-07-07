@@ -7,17 +7,23 @@ const ThreeDModelSchema = new Schema(
       ref: "User",
       required: true,
     },
-    PublicUrl: {
+    publicUrl: {
       type: String,
       required: true,
       trim: true,
     },
     fileName: { type: String, required: true },
+    fileType: { type: String,  }, 
     cameraState: {
       position: { x: Number, y: Number, z: Number },
       target: { x: Number, y: Number, z: Number },
       zoom: { type: Number },
     },
+    fileType: {
+      type: String,
+      enum: ["obj", "glb"],
+      required: true,
+    }
   },
   {
     timestamps: true,
