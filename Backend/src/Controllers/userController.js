@@ -1,8 +1,7 @@
 import asyncHandler from "../Utils/asyncHandler.js";
-import cookie from "cookie-parser";
-import { User } from "../Models/userModel.js";
 import apiError from "../Utils/apiError.js";
-import apiResponse from "../Utils/apIResponse.js";
+import apiResponse from "../Utils/apiResponse.js";
+import { User } from "../Models/userModel.js";
 
 async function generateTokens(userId) {
   try {
@@ -31,20 +30,19 @@ const options = {
 };
 
 const userRegistration = asyncHandler(async (req, res) => {
-    const { firstName, secondName, email, password } = req?.body;
-
-    if (firstName == "" || secondName == "" || email == "" || password == "") {
+    const { firstName, lastName, email, password } = req?.body;
+    if (firstName == "" || lastName == "" || email == "" || password == "") {
       throw new apiError(400, "All fields are required");
     }
     const userExits = await User.findOne({ email: email });
     if (userExits) {
      throw new apiError(409, "Email is already in use");
     }
-   const user = await User.create({
+   let user = await User.create({
       firstName,
-      secondName,
+      lastName,
       email,
-      password,
+      hash_password: password,
     });
     if (!user) {
       throw new apiError(500, "Something went wrong while registering user");
@@ -92,7 +90,7 @@ const userLogin = asyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(
-      new apiResponse(200, loggedInUser, "Registration and login successful")
+      new apiResponse(200, loggedInUser, " login successful")
     );
 });
 

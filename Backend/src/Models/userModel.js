@@ -31,9 +31,6 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-
-export const User = model("User", userSchema);
-
 userSchema.pre("save", async function (next) {
   if (!this.isModified("hash_password")) {
     return next();
@@ -61,3 +58,5 @@ userSchema.methods.generateRefreshToken = function () {
   });
   return refreshToken;
 };
+
+export const User = model("User", userSchema);
