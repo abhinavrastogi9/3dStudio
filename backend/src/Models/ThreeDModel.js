@@ -23,7 +23,23 @@ const ThreeDModelSchema = new Schema(
       type: String,
       enum: ["obj", "glb"],
       required: true,
-    }
+    },
+    environmentPreset: {
+      type: String,
+      enum: [
+        "sunset",
+        "dawn",
+        "night",
+        "warehouse",
+        "forest",
+        "apartment",
+        "studio",
+        "city",
+        "park",
+        "lobby",
+      ],
+      default: "apartment", // Default preset
+    },
   },
   {
     timestamps: true,
