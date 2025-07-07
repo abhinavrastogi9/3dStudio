@@ -82,4 +82,4 @@ const getThreeDFileById = asyncHandler(async (req, res) => {
   res.status(200).json(new apiResponse(200, file, "File retrieved successfully"));
 });
 
-export default {uploadThreeDFile, getAllThreeDFiles, deleteThreeDFile, getThreeDFileById};
+export  {uploadThreeDFile, getAllThreeDFiles, deleteThreeDFile, getThreeDFileById};
