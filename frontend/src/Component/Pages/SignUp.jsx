@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Box } from "lucide-react";
 import React from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";

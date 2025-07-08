@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-        import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CameraPositionViewer = ({ controlsRef }) => {
   const { camera } = useThree();
@@ -46,7 +46,6 @@ const Loading = () => {
   );
 };
 
-
 const ModelViewer = () => {
   const controlsRef = useRef();
   const [environment, setEnvironment] = useState("warehouse");
@@ -71,13 +70,11 @@ const ModelViewer = () => {
   ];
   return (
     <>
-      <div className="flex h-screen bg-gray-50">
-
-        {/* 3D Viewer */}
-        <div className="flex-1 relative">
+      <div className="flex min-h-screen bg-gray-50">
+        <div className="flex-1 relative max-h-[90vh]">
           <Canvas
             camera={{ position: [0, 2, 6], fov: 60 }}
-            className="w-full h-full"
+            className="w-full h-[90vh]"
             shadows
           >
             <ambientLight intensity={0.3} />
@@ -91,7 +88,7 @@ const ModelViewer = () => {
             <hemisphereLight args={["#ffffff", "#444444", 0.6]} />
             <Environment preset={environment} background />
 
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={null}>
               {/* <GLBImageLoader /> */}
               <ObjImageLoader />
             </Suspense>
@@ -103,7 +100,6 @@ const ModelViewer = () => {
             />
             <CameraPositionViewer controlsRef={controlsRef} />
           </Canvas>
-
           {/* Floating Controls */}
           <div className="absolute top-4 left-4 flex flex-col gap-2">
             <Button
@@ -130,46 +126,45 @@ const ModelViewer = () => {
               Delete Model
             </Button>
           </div>
-        </div>
-
-        {/* Side Panel */}
-        <div className="w-80 bg-white border-l border-gray-200 p-6 overflow-y-auto">
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <Button variant="outline" className="w-full bg-transparent">
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent"
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete Model
-              </Button>
-              <Select
-                value={environment}
-                onValueChange={setEnvironment}
-                className="w-full"
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Environment" />
-                </SelectTrigger>
-                <SelectContent>
-                  {environmentPresets.map((preset) => (
-                    <SelectItem
-                      key={preset}
-                      value={preset}
-                      className="cursor-pointer "
-                    >
-                      {preset}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <div className="w-80 top-4 right-4 absolute  border-gray-200 p-6 overflow-y-auto">
+            <div className="space-y-6">
+              <div className="space-y-2 ">
+                <Button variant="outline" className="w-full bg-white">
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 bg-white"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Model
+                </Button>
+                <Select
+                  value={environment}
+                  onValueChange={setEnvironment}
+                  className="w-full bg-white"
+                >
+                  <SelectTrigger className="w-full bg-white">
+                    <SelectValue placeholder="Environment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {environmentPresets.map((preset) => (
+                      <SelectItem
+                        key={preset}
+                        value={preset}
+                        className="cursor-pointer bg-whtie"
+                      >
+                        {preset}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
+        {/* Side Panel */}
       </div>
     </>
   );

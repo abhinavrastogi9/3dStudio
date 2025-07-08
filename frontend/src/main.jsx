@@ -9,7 +9,7 @@ import ModelViewer from "./Component/Pages/ModelViewer.jsx";
 import { LandingPage } from "./Component/Pages/LandingPage.jsx";
 import SignIn from "./Component/Pages/SignIn.jsx";
 import SignUp from "./Component/Pages/SignUp.jsx";
-import Upload from "./Component/Pages/Upload.jsx";
+import UploadFile from "./Component/Pages/UploadFile.jsx";
 import DashBoard from "./Component/Pages/DashBoard.jsx";
 const router = createBrowserRouter([
   {
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: "/upload",
-        element: <Upload />,
+        path: "/uploadfile",
+        element: <UploadFile />,
       },
       {
         path: "/dashboard",
