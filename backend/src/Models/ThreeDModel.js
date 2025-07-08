@@ -38,7 +38,7 @@ const ThreeDModelSchema = new Schema(
         "park",
         "lobby",
       ],
-      default: "apartment", // Default preset
+      default: "warehouse", 
     },
   },
   {

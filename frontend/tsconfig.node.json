@@ -1,0 +1,9 @@
+{
+  "files": [".fro/src/**/*.ts", "./src/**/*.tsx"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

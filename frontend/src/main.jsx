@@ -5,18 +5,47 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./Store/store.js";
 import { Provider } from "react-redux";
-import ModelViewer from "./Component/ModelViewer.jsx";
+import ModelViewer from "./Component/Pages/ModelViewer.jsx";
+import { LandingPage } from "./Component/Pages/LandingPage.jsx";
+import SignIn from "./Component/Pages/SignIn.jsx";
+import SignUp from "./Component/Pages/SignUp.jsx";
+import Upload from "./Component/Pages/Upload.jsx";
+import DashBoard from "./Component/Pages/DashBoard.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
       {
-        path: "/model",
-        element: <ModelViewer/>,
+        path: "/",
+        element: <LandingPage />,
       },
-    ]
-  }
+      {
+        path: "/model",
+        element: <ModelViewer />,
+      },
+      {
+        path: "/signin",
+        element: <SignIn />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/upload",
+        element: <Upload />,
+      },
+      {
+        path: "/dashboard",
+        element: <DashBoard />,
+      },
+      {
+        path: "*",
+        element: <LandingPage />,
+      },
+    ],
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(

@@ -1,14 +1,15 @@
-
 import "./App.css";
 import { Outlet } from "react-router";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Footer from "./Component/Footer";
 function App() {
-
   return (
     <>
-    <h1>3D Renderer</h1>
       <Outlet />
-    </> 
+      <ToastContainer />
+      <Footer />
+    </>
   );
 }
 

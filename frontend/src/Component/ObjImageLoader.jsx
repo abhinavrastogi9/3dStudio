@@ -9,17 +9,12 @@ const ObjImageLoader = () => {
 
   const model = useLoader(OBJLoader, modelUrl);
   const modelRef = useRef();
-
-  // ✅ Center the model using bounding box
   useEffect(() => {
     if (model && modelRef.current) {
       const box = new Box3().setFromObject(model);
       const center = new Vector3();
       box.getCenter(center);
       modelRef.current.position.sub(center); // move model to origin
-
-      console.log("✅ OBJ Center:", center);
-      console.log("✅ OBJ Bounding Box:", box);
     }
   }, [model]);
 
@@ -34,5 +29,3 @@ const ObjImageLoader = () => {
 export default ObjImageLoader;
 
 
-//https://3d-images-renderer.s3.ap-south-1.amazonaws.com/1751904684169-car_glb.glb
-//https://3d-images-renderer.s3.ap-south-1.amazonaws.com/1751904711084-FinalBaseMesh.obj
