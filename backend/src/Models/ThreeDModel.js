@@ -13,7 +13,7 @@ const ThreeDModelSchema = new Schema(
       trim: true,
     },
     fileName: { type: String, required: true },
-    fileType: { type: String,  }, 
+    fileType: { type: String },
     cameraState: {
       position: { x: Number, y: Number, z: Number },
       target: { x: Number, y: Number, z: Number },
@@ -38,7 +38,7 @@ const ThreeDModelSchema = new Schema(
         "park",
         "lobby",
       ],
-      default: "warehouse", 
+      default: "warehouse",
     },
   },
   {

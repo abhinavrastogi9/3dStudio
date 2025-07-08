@@ -5,6 +5,7 @@ import {
   getAllThreeDFiles,
   deleteThreeDFile,
   getThreeDFileById,
+  updateFile,
 } from "../Controllers/threeDController.js";
 import verifyJwt from "../MiddleWares/verifyJwtMiddleware.js";
 
@@ -15,7 +16,8 @@ ThreeDFileRouter.post(
   uploadFile.single("file"),
   uploadThreeDFile
 );
-ThreeDFileRouter.get("/all", verifyJwt, getAllThreeDFiles);
+ThreeDFileRouter.get("/allfiles", verifyJwt, getAllThreeDFiles);
 ThreeDFileRouter.delete("/:fileId", verifyJwt, deleteThreeDFile);
 ThreeDFileRouter.get("/:fileId", verifyJwt, getThreeDFileById);
+ThreeDFileRouter.put("/:fileId", verifyJwt, updateFile);
 export default ThreeDFileRouter;

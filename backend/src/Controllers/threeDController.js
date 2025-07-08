@@ -113,6 +113,29 @@ const getThreeDFileById = asyncHandler(async (req, res) => {
   // Respond with file data
   res.status(200).json(new apiResponse(200, file, "File retrieved successfully"));
 });
+const updateFile= asyncHandler(async (req, res) => {
+  const { fileId } = req.params;
+  const { environmentPreset, cameraState } = req.body;
 
+  // Validate input
+  if (!fileId || !environmentPreset || !cameraState) {
+    throw new apiError(400, "File ID, environment preset, and camera state are required");
+  }
+
+  // Find file by ID
+  const file = await ThreeDFile.findById(fileId);
+  if (!file) {
+    throw new apiError(404, "File not found");
+  }
+
+  // Update file details
+  file.environmentPreset = environmentPreset;
+  file.cameraState = cameraState;
+  // Save updated file
+  const updatedFile = await file.save();
+
+  // Respond with updated file data
+  res.status(200).json(new apiResponse(200, updatedFile, "File updated successfully"));
+});
 // Export all controller functions
-export  {uploadThreeDFile, getAllThreeDFiles, deleteThreeDFile, getThreeDFileById};
+export  {uploadThreeDFile, getAllThreeDFiles, deleteThreeDFile, getThreeDFileById, updateFile};

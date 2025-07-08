@@ -19,5 +19,5 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/",userRouter)
-app.use("/threeDFile",ThreeDFileRouter)
+app.use("/file",ThreeDFileRouter)
 app.use(errorHandler);

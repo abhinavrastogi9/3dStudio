@@ -17,7 +17,6 @@ const ObjImageLoader = () => {
       modelRef.current.position.sub(center); // move model to origin
     }
   }, [model]);
-
   return (
     <primitive
       ref={modelRef}

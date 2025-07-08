@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./Component/Footer";
-import Header from "./Component/Pages/Header";
+import Header from "./Component/Header";
 function App() {
   return (
     <>

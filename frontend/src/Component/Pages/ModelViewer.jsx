@@ -1,8 +1,8 @@
 import React, { Suspense, useRef, useEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import GLBImageLoader from "../GLBImageLoader";
-import ObjImageLoader from "../ObjImageLoader";
+import GLBImageLoader from "../../components/ui/GLBImageLoader";
+import ObjImageLoader from "../../components/ui/ObjImageLoader";
 import { Environment } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
@@ -100,17 +100,6 @@ const ModelViewer = () => {
             />
             <CameraPositionViewer controlsRef={controlsRef} />
           </Canvas>
-          {/* Floating Controls */}
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-white/90 backdrop-blur-sm"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </div>
 
           {/* Bottom Controls */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">

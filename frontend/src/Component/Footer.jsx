@@ -4,8 +4,8 @@ export default function Footer() {
   return (
     <>
       <footer className="bg-gray-200 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid gri md:grid-cols-4 gap">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-auto">
+          <div className="grid gri md:grid-cols-4 gap pt-4">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Box className="h-6 w-6 text-gray-900" />
@@ -23,7 +23,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div className=" border-gray-200 mt-8 pt-8 text-center text-gray-600">
+          <div className=" border-gray-200   text-center text-gray-600 pb-4">
             <p>&copy; 2025 3D Studio. All rights reserved.</p>
           </div>
         </div>
