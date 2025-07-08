@@ -26,7 +26,6 @@ const uploadThreeDFile = asyncHandler(async (req, res) => {
     await deleteFileFromS3(key);
     throw new apiError(400, "Unsupported file type");
   }
-
   // Check if user exists
   const user = await User.findById(userId);
   if (!user) {

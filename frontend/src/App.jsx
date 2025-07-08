@@ -1,10 +1,20 @@
 import "./App.css";
-import { Outlet } from "react-router";
+import { Outlet,  } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./Component/Footer";
 import Header from "./Component/Header";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 function App() {
+  const { isLoggedIn } = useSelector((state) => state.authenticationSlice);
+  const navigate=useNavigate()
+  useEffect(() => {
+    if (isLoggedIn) navigate("/dashboard")
+      else{
+    navigate("/signin")};
+  }, [isLoggedIn]);
   return (
     <>
       <Header />

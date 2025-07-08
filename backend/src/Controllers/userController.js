@@ -25,14 +25,13 @@ async function generateTokens(userId) {
 }
 
 // Cookie options for storing tokens
-const isProduction = process.env.PRODUCTION === "true";
+const isProduction = process.env.PRODUCTION === "production";
 const options = {
   domain: isProduction ? ".clikn.in" : "localhost", // Use production domain or localhost
   path: "/",
   httpOnly: true,
   secure: isProduction, // Secure cookies in production
   sameSite: isProduction ? "None" : "Lax", // Adjust for cross-domain in production
-  maxAge: 24 * 60 * 60 * 1000, // 1 day
 };
 
 // Controller for user registration
@@ -97,7 +96,7 @@ const userLogin = asyncHandler(async (req, res) => {
   // Verify password
   const isPasswordCorrect = await userExists.isPasswordCorrect(password);
   if (!isPasswordCorrect) {
-    throw new apiError(401, "Unauthorized request");
+    throw new apiError(401, "Invalid email or password.");
   }
   // Generate tokens for the user
   const { accessToken, refreshToken } = await generateTokens(userExists?._id);

@@ -1,39 +1,36 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const loginApiCall = createAsyncThunk(
   "authenticationSlice/loginApiCall",
-  async (loginData) => {
+  async (loginData, { rejectWithValue }) => {
     try {
-      const result = await axios.post(
-        `${process.env.BASE_URL}/login`,
-        loginData
-      );
+      const result = await axios.post(`${BASE_URL}/login`, loginData, {
+        withCredentials: true,
+      });
       return result.data.data;
     } catch (error) {
-      toast.error(error.response.data.message || "Login failed");
-      throw error;
+      return rejectWithValue(error.response.data.message || "Login failed");
     }
   }
 );
 export const signupApiCall = createAsyncThunk(
   "authenticationSlice/signupApiCall",
-  async (signupData) => {
+  async (formData, { rejectWithValue }) => {
     try {
-      const result = await axios.post(
-        `${process.env.BASE_URL}/signup`,
-        signupData
-      );
+      const result = await axios.post(`${BASE_URL}/signup`, formData, {
+        withCredentials: true,
+      });
       return result.data.data;
     } catch (error) {
-      toast.error(error.response.data.message || "Signup failed");
-      throw error;
+      return rejectWithValue(error.response.data.message || "Signup failed");
     }
   }
 );
 export const logoutApiCall = createAsyncThunk(
   "authenticationSlice/logoutApiCall",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const result = await axios.post(`${process.env.BASE_URL}/logout`, null, {
         withCredentials: true,
@@ -47,7 +44,7 @@ export const logoutApiCall = createAsyncThunk(
 );
 export const verifyUserApiCall = createAsyncThunk(
   "authenticationSlice/verifyUserApiCall",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const result = await axios.get(
         `${process.env.BASE_URL}/userVerification`,
@@ -58,7 +55,7 @@ export const verifyUserApiCall = createAsyncThunk(
       return result.data.data;
     } catch (error) {
       toast.error(error.response.data.message || "Failed to fetch user info");
-      throw error;
+      return rejectWithValue();
     }
   }
 );
@@ -85,8 +82,8 @@ const authenticationSlice = createSlice({
       })
       .addCase(loginApiCall.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
-        toast.error("Login failed");
+        state.error = action.payload || action.error.message;
+        toast.error(action.payload);
       })
       .addCase(signupApiCall.pending, (state) => {
         state.loading = true;
@@ -99,8 +96,8 @@ const authenticationSlice = createSlice({
       })
       .addCase(signupApiCall.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
-        toast.error("Signup failed");
+        state.error = action.payload || action.error.message;
+        toast.error(action.payload);
       })
       .addCase(logoutApiCall.pending, (state) => {
         state.loading = true;

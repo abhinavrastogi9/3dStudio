@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { signupApiCall } from "../../Store/userAuthentication/authenticationSlice.js";
+import { useDispatch } from "react-redux";
 export default function signUp() {
   const [formData, setFormData] = React.useState({
     email: "",
@@ -23,7 +25,7 @@ export default function signUp() {
   });
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-
+  const dispatch = useDispatch();
   function handleInputChange(event) {
     setFormData({
       ...formData,
@@ -32,11 +34,10 @@ export default function signUp() {
   }
   function handleSubmit(event) {
     event.preventDefault();
-    // Handle form submission logic here
+    dispatch(signupApiCall(formData));
   }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
@@ -51,9 +52,7 @@ export default function signUp() {
             <Box className="h-8 w-8 text-gray-900" />
             <span className="text-2xl font-bold text-gray-900">3D Studio</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome!!
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome!!</h1>
           <p className="text-gray-600">Create an account to continue</p>
         </div>
         <Card className="shadow-lg border-0">
