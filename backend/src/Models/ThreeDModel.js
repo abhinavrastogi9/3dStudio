@@ -24,6 +24,7 @@ const ThreeDModelSchema = new Schema(
       enum: ["obj", "glb"],
       required: true,
     },
+    key: String,
     environmentPreset: {
       type: String,
       enum: [

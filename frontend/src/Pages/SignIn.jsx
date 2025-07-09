@@ -24,7 +24,7 @@ export default function SignIn() {
     password: "",
   });
   const [showPassword, setShowPassword] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading] = React.useState(false);
   const dispatch = useDispatch();
   function handleInputChange(event) {
     setFormData({

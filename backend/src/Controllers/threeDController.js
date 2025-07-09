@@ -36,6 +36,7 @@ const uploadThreeDFile = asyncHandler(async (req, res) => {
     publicUrl: location,
     fileName: originalname,
     fileType: fileType,
+    key: key,
   };
 
   // Save file data to database
@@ -89,11 +90,15 @@ const deleteThreeDFile = asyncHandler(async (req, res) => {
   }
 
   // Delete file from S3 and database
-  await deleteFileFromS3(file.key);
+  if (file?.key) {
+    await deleteFileFromS3(file.key);
+  }
   await ThreeDFile.findByIdAndDelete(fileId);
 
   // Respond with success
-  res.status(200).json(new apiResponse(200, null, "File deleted successfully"));
+  res
+    .status(200)
+    .json(new apiResponse(200, { _id: fileId }, "File deleted successfully"));
 });
 
 // Controller to get a 3D file by its ID
@@ -102,7 +107,7 @@ const getThreeDFileById = asyncHandler(async (req, res) => {
   if (!fileId) {
     throw new apiError(400, "File ID is required");
   }
-  if (fileId.length != 24 ) {
+  if (fileId.length != 24) {
     throw new apiError(404, "File not found");
   }
   // Find file by ID

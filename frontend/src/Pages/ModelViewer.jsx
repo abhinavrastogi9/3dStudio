@@ -14,7 +14,10 @@ import {
 import Loading from "../components/ui/Loading.jsx";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getFileByIdApiCall } from "../Store/fileApiCalls/fileApiSlice.js";
+import {
+  deleteFileApiCall,
+  getFileByIdApiCall,
+} from "../Store/fileApiCalls/fileApiSlice.js";
 const DynamicModelLoader = lazy(() =>
   import("../components/DynamicModelLoader.jsx")
 );
@@ -71,10 +74,16 @@ const ModelViewer = () => {
       navigate("/dashboard");
     }
   }, [fileFetched, fileData]);
+  function deleteModel() {
+    dispatch(deleteFileApiCall(_id));
+    navigate("/dashboard");
+  }
+  function saveModel() {}
   return (
     <>
       <div className="flex min-h-screen bg-gray-50">
         <div className="flex-1 relative max-h-[90vh] flex justify-center items-center">
+          {/* 3D Canvas */}
           {Object.keys(fileData).length > 0 && (
             <Suspense fallback={<Loading />}>
               <Canvas
@@ -108,32 +117,44 @@ const ModelViewer = () => {
           )}
           {/* Bottom Controls */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-            <Button className="bg-green-600 hover:bg-green-700 text-white">
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white"
+              onClick={saveModel}
+            >
               <Save className="h-4 w-4 mr-2" />
-              Save Camera State
+              Save State
             </Button>
             <Button
               variant="outline"
               className="bg-white/90 backdrop-blur-sm text-red-600 hover:text-red-700"
+              onClick={deleteModel}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Delete Model
+              Delete
             </Button>
           </div>
-          <div className="w-80 top-4 right-4 absolute  border-gray-200 p-6 overflow-y-auto">
+          {/* Top Controls */}
+          <div className="w-50 -top-4 -right-4 absolute  border-gray-200 p-6 overflow-y-auto">
             <div className="space-y-6">
               <div className="space-y-2 ">
-                <Button variant="outline" className="w-full bg-white">
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Changes
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 bg-white"
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete Model
-                </Button>
+                <div className="space-y-2  hidden md:block">
+                  <Button
+                    variant="outline"
+                    className="w-full bg-white"
+                    onClick={saveModel}
+                  >
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 bg-white"
+                    onClick={deleteModel}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Model
+                  </Button>
+                </div>
                 <Select
                   value={environment}
                   onValueChange={setEnvironment}
