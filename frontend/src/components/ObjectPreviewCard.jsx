@@ -10,15 +10,34 @@ import { Eye, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Loading from "./ui/Loading";
-import {useInView} from "react-intersection-observer"
-// Outside the component (top of the file)
+import { useInView } from "react-intersection-observer";
+import { deleteFileApiCall } from "../Store/fileApiCalls/fileApiSlice.js";
+import { useDispatch } from "react-redux";
+
+
+
+
 const DynamicModelLoader = lazy(() => import("./DynamicModelLoader.jsx"));
 export function ObjectPreviewCard({ file }) {
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
+  const [initalcameraState, setInitalcameraState] = useState({
+    position: { x: 0, y: 2, z: 6 },
+    target: { x: 0, y: 0, z: 0 },
+    zoom: 0,
+  });
+  const dispatch = useDispatch();
+  function deleteModel() {
+    dispatch(deleteFileApiCall(file?._id));
+  }
+  useEffect(() => {
+    if (file?.cameraState) {
+      setInitalcameraState(file?.cameraState);
+    }
+  }, [file]);
   return (
     <Card className="group hover:shadow-lg transition-all duration-200 border-gray-200 hover:border-gray-300">
       <CardHeader className="p-4 pb-2">
@@ -41,39 +60,51 @@ export function ObjectPreviewCard({ file }) {
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden flex justify-center items-center" ref={ref}>
-         {inView && <Suspense fallback={<Loading />}>
-            <Canvas
-              camera={{ position: [0, 2, 6], fov: 60 }}
-              className="w-full h-full"
-              shadows
-            >
-              <ambientLight intensity={0.3} />
-              <directionalLight
-                position={[10, 10, 10]}
-                intensity={1.5}
-                castShadow
-              />
-              <directionalLight position={[-10, -5, -10]} intensity={0.6} />
-              <pointLight position={[0, 5, 5]} intensity={0.8} />
-              <hemisphereLight args={["#ffffff", "#444444", 0.6]} />
-              <Environment preset={file?.environmentPreset} background />
+        <div
+          className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden flex justify-center items-center"
+          ref={ref}
+        >
+          {inView && (
+            <Suspense fallback={<Loading />}>
+              <Canvas
+                camera={{
+                  position: [
+                    initalcameraState?.position?.x,
+                    initalcameraState?.position?.y,
+                    initalcameraState?.position?.z,
+                  ],
+                  fov: 60,
+                }}
+                className="w-full h-full"
+                shadows
+              >
+                <ambientLight intensity={0.3} />
+                <directionalLight
+                  position={[10, 10, 10]}
+                  intensity={1.5}
+                  castShadow
+                />
+                <directionalLight position={[-10, -5, -10]} intensity={0.6} />
+                <pointLight position={[0, 5, 5]} intensity={0.8} />
+                <hemisphereLight args={["#ffffff", "#444444", 0.6]} />
+                <Environment preset={file?.environmentPreset} background />
 
-              <DynamicModelLoader
-                publicUrl={file?.publicUrl}
-                type={file?.fileType}
-              />
+                <DynamicModelLoader
+                  publicUrl={file?.publicUrl}
+                  type={file?.fileType}
+                />
 
-              <OrbitControls enablePan enableZoom enableRotate />
-            </Canvas>
-          </Suspense>}
+                <OrbitControls enablePan enableZoom enableRotate />
+              </Canvas>
+            </Suspense>
+          )}
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex gap-2">
         <Link to={`/dashboard/model/${file._id}`}>
           <Button
             size="sm"
-            className="flex-1 gap-1 bg-gray-900 hover:bg-gray-800"
+            className="flex-1 gap-1 bg-gray-900 hover:bg-gray-800 cursor-pointer"
           >
             <Eye className="h-3 w-3" />
             View
@@ -82,7 +113,8 @@ export function ObjectPreviewCard({ file }) {
         <Button
           size="sm"
           variant="outline"
-          className="gap-1 text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent"
+          className="gap-1 text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent cursor-pointer"
+          onClick={deleteModel}
         >
           <Trash2 className="h-3 w-3" />
           Delete

@@ -41,11 +41,11 @@ export const getFileByIdApiCall = createAsyncThunk(
 // Update file
 export const UpdateFileApiCall = createAsyncThunk(
   "fileApiSlice/UpdateFileApiCall",
-  async ({ FileId, filedata }, { rejectWithValue }) => {
+  async ({ FileId, environmentPreset, cameraState }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
         `${BASE_URL}/file/${FileId}`,
-        { filedata },
+        { environmentPreset: environmentPreset, cameraState: cameraState },
         { withCredentials: true }
       );
       return response.data.data;
@@ -139,7 +139,7 @@ const fileApiSlice = createSlice({
       })
       .addCase(getFileByIdApiCall.rejected, (state, action) => {
         state.fileFetched = "failed";
-        state.fileData={}
+        state.fileData = {};
         state.error = action.payload || action.error.message;
         toast.error(action.payload);
       });

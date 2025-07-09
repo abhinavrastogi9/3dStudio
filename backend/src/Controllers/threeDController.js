@@ -120,6 +120,8 @@ const getThreeDFileById = asyncHandler(async (req, res) => {
     .status(200)
     .json(new apiResponse(200, file, "File retrieved successfully"));
 });
+
+// update changes in file
 const updateFile = asyncHandler(async (req, res) => {
   const { fileId } = req.params;
   const { environmentPreset, cameraState } = req.body;

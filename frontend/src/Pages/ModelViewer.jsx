@@ -17,29 +17,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteFileApiCall,
   getFileByIdApiCall,
+  UpdateFileApiCall,
 } from "../Store/fileApiCalls/fileApiSlice.js";
+import CameraPositionViewer from "../components/CameraPositionViewer.jsx";
 const DynamicModelLoader = lazy(() =>
   import("../components/DynamicModelLoader.jsx")
 );
 
-const CameraPositionViewer = ({ controlsRef }) => {
-  const { camera } = useThree();
-  useEffect(() => {
-    const controls = controlsRef.current;
-    if (!controls) return;
-    const handleEnd = () => {
-      const position = camera.position;
-      const target = controls.target;
-      const zoomDistance = position.distanceTo(target);
-      console.log("🎯 Camera Position:", position);
-      console.log("🎯 Camera Target:", target);
-      console.log("🔍 Zoom (Distance):", zoomDistance.toFixed(2));
-    };
-    controls.addEventListener("end", handleEnd);
-    return () => controls.removeEventListener("end", handleEnd);
-  }, [camera, controlsRef]);
-  return null;
-};
+
 const environmentPresets = [
   "sunset",
   "dawn",
@@ -57,28 +42,41 @@ const ModelViewer = () => {
   const [environment, setEnvironment] = useState("warehouse");
   const { _id } = useParams();
   const dispatch = useDispatch();
+  const { fileFetched, fileData } = useSelector((state) => state.fileApiSlice);
+
+  const [initalcameraState, setInitalcameraState] = useState({
+    position: { x: 0, y: 2, z: 6 },
+    target: { x: 0, y: 0, z: 0 },
+    zoom: 0,
+  });
   useEffect(() => {
     dispatch(getFileByIdApiCall(_id));
   }, [_id]);
 
-  const { fileFetched, fileData } = useSelector((state) => state.fileApiSlice);
-  useEffect(() => {
-    if (controlsRef.current) {
-      controlsRef.current.target.set(0, 0, 0);
-      controlsRef.current.update();
-    }
-  }, []);
   const navigate = useNavigate();
   useEffect(() => {
     if (Object.keys(fileData).length === 0 && fileFetched === "failed") {
       navigate("/dashboard");
     }
   }, [fileFetched, fileData]);
+  //delete model
   function deleteModel() {
     dispatch(deleteFileApiCall(_id));
     navigate("/dashboard");
   }
-  function saveModel() {}
+  //save model or update model
+  function saveModel() {
+    const FileId = _id;
+    const environmentPreset = environment;
+    const cameraState = initalcameraState;
+    dispatch(UpdateFileApiCall({ FileId, environmentPreset, cameraState }));
+  }
+//set the inital position of the 3d model in canvas
+  useEffect(() => {
+    if (fileData?.cameraState) {
+      setInitalcameraState(fileData?.cameraState);
+    }
+  }, [fileData]);
   return (
     <>
       <div className="flex min-h-screen bg-gray-50">
@@ -87,7 +85,14 @@ const ModelViewer = () => {
           {Object.keys(fileData).length > 0 && (
             <Suspense fallback={<Loading />}>
               <Canvas
-                camera={{ position: [0, 2, 6], fov: 60 }}
+                camera={{
+                  position: [
+                    initalcameraState?.position?.x,
+                    initalcameraState?.position?.y,
+                    initalcameraState?.position?.z,
+                  ],
+                  fov: 60,
+                }}
                 className="w-full h-[90vh]"
                 shadows
               >
@@ -111,7 +116,10 @@ const ModelViewer = () => {
                   enableRotate
                   ref={controlsRef}
                 />
-                <CameraPositionViewer controlsRef={controlsRef} />
+                <CameraPositionViewer
+                  controlsRef={controlsRef}
+                  setInitalcameraState={setInitalcameraState}
+                />
               </Canvas>
             </Suspense>
           )}
