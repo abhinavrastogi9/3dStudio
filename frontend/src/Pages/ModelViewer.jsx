@@ -24,7 +24,6 @@ const DynamicModelLoader = lazy(() =>
   import("../components/DynamicModelLoader.jsx")
 );
 
-
 const environmentPresets = [
   "sunset",
   "dawn",
@@ -40,10 +39,11 @@ const environmentPresets = [
 const ModelViewer = () => {
   const controlsRef = useRef();
   const [environment, setEnvironment] = useState("warehouse");
+  const [publicUrl, setPublicUrl] = useState("");
+  const [fileType, setFileType] = useState("glb");
   const { _id } = useParams();
   const dispatch = useDispatch();
   const { fileFetched, fileData } = useSelector((state) => state.fileApiSlice);
-
   const [initalcameraState, setInitalcameraState] = useState({
     position: { x: 0, y: 2, z: 6 },
     target: { x: 0, y: 0, z: 0 },
@@ -71,10 +71,13 @@ const ModelViewer = () => {
     const cameraState = initalcameraState;
     dispatch(UpdateFileApiCall({ FileId, environmentPreset, cameraState }));
   }
-//set the inital position of the 3d model in canvas
+  //set the inital position of the 3d model in canvas
   useEffect(() => {
     if (fileData?.cameraState) {
       setInitalcameraState(fileData?.cameraState);
+      setEnvironment(fileData?.environmentPreset);
+      setPublicUrl(fileData?.publicUrl);
+      setFileType(fileData?.fileType);
     }
   }, [fileData]);
   return (
@@ -105,11 +108,8 @@ const ModelViewer = () => {
                 <directionalLight position={[-10, -5, -10]} intensity={0.6} />
                 <pointLight position={[0, 5, 5]} intensity={0.8} />
                 <hemisphereLight args={["#ffffff", "#444444", 0.6]} />
-                <Environment preset={fileData?.environmentPreset} background />
-                <DynamicModelLoader
-                  publicUrl={fileData?.publicUrl}
-                  type={fileData?.fileType}
-                />
+                <Environment preset={environment} background />
+                <DynamicModelLoader publicUrl={publicUrl} type={fileType} />
                 <OrbitControls
                   enablePan
                   enableZoom

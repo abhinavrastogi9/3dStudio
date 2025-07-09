@@ -133,6 +133,9 @@ const fileApiSlice = createSlice({
 
     // Get single file
     builder
+      .addCase(getFileByIdApiCall.pending, (state) => {
+        state.fileData = {};
+      })
       .addCase(getFileByIdApiCall.fulfilled, (state, action) => {
         state.fileFetched = "success";
         state.fileData = action.payload;
