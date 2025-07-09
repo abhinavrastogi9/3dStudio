@@ -1,28 +1,27 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
+import DashBoardLayout from "./Layout/DashBoardLayout.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./Store/store.js";
 import { Provider } from "react-redux";
-import ModelViewer from "./Component/Pages/ModelViewer.jsx";
-import { LandingPage } from "./Component/Pages/LandingPage.jsx";
-import SignIn from "./Component/Pages/SignIn.jsx";
-import SignUp from "./Component/Pages/SignUp.jsx";
-import UploadFile from "./Component/Pages/UploadFile.jsx";
-import DashBoard from "./Component/Pages/DashBoard.jsx";
+import ModelViewer from "./Pages/ModelViewer.jsx";
+import { LandingPage } from "./Pages/LandingPage.jsx";
+import SignIn from "./Pages/SignIn.jsx";
+import SignUp from "./Pages/SignUp.jsx";
+import UploadFile from "./Pages/UploadFile.jsx";
+import DashBoard from "./Pages/DashBoard.jsx";
+import path from "path";
+import EntryLayout from "./Layout/EntryLayout.jsx";
+import NotFoundPage from "./Pages/NotFoundPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <EntryLayout />,
     children: [
       {
         path: "/",
         element: <LandingPage />,
-      },
-      {
-        path: "/model",
-        element: <ModelViewer />,
       },
       {
         path: "/signin",
@@ -32,19 +31,29 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignUp />,
       },
-      {
-        path: "/uploadfile",
-        element: <UploadFile />,
-      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashBoardLayout />,
+    children: [
       {
         path: "/dashboard",
         element: <DashBoard />,
       },
       {
-        path: "*",
-        element: <LandingPage />,
+        path: "/dashboard/model",
+        element: <ModelViewer />,
+      },
+      {
+        path: "/dashboard/uploadfile",
+        element: <UploadFile />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 

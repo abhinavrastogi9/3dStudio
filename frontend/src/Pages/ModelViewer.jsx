@@ -1,8 +1,8 @@
 import React, { Suspense, useRef, useEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import GLBImageLoader from "../../components/ui/GLBImageLoader";
-import ObjImageLoader from "../../components/ui/ObjImageLoader";
+import GLBImageLoader from "../components/ui/GLBImageLoader";
+import ObjImageLoader from "../components/ui/ObjImageLoader";
 import { Environment } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";

@@ -1,6 +1,5 @@
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -14,7 +13,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { signupApiCall } from "../../Store/userAuthentication/authenticationSlice.js";
+import { signupApiCall } from "../Store/userAuthentication/authenticationSlice.js";
 import { useDispatch } from "react-redux";
 export default function signUp() {
   const [formData, setFormData] = React.useState({

@@ -1,17 +1,11 @@
-"use client";
-
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Box,
-  Upload,
-  Eye,
- 
-} from "lucide-react";
+import { Box, Upload, Eye } from "lucide-react";
+import { Outlet } from "react-router";
 export function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -160,7 +154,7 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-
+      <Outlet />
     </div>
   );
 }

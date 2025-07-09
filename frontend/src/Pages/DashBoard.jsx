@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Upload, Plus, User } from "lucide-react";
+import { Upload, User } from "lucide-react";
 import { ObjectPreviewCard } from "@/components/ui/ObjectPreviewCard.jsx";
 import { Link } from "react-router-dom";
 
