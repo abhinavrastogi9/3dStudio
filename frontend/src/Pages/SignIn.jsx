@@ -7,22 +7,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {useDispatch} from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { ArrowLeft, Box } from "lucide-react";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { loginApiCall } from "../Store/userAuthentication/authenticationSlice.js";
 export default function SignIn() {
+  const { isLoggedIn, status } = useSelector(
+    (state) => state.authenticationSlice
+  );
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-const  dispatch=useDispatch()
+  const dispatch = useDispatch();
   function handleInputChange(event) {
     setFormData({
       ...formData,
@@ -31,10 +34,17 @@ const  dispatch=useDispatch()
   }
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch(loginApiCall(formData))
+    dispatch(loginApiCall(formData));
     // Handle form submission logic here
   }
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn && status === "success") {
+      console.log("navgate");
+      navigate("/dashboard");
+    }
+  }, [status, isLoggedIn]);
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">

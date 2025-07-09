@@ -32,34 +32,33 @@ export const logoutApiCall = createAsyncThunk(
   "authenticationSlice/logoutApiCall",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await axios.post(`${process.env.BASE_URL}/logout`, null, {
+      const result = await axios.get(`${BASE_URL}/logout`, {
         withCredentials: true,
       });
       return result.data.data;
     } catch (error) {
-      toast.error(error.response.data.message || "Logout failed");
-      throw error;
+      return rejectWithValue(error.response.data.message || "Logout failed");
     }
   }
 );
 export const verifyUserApiCall = createAsyncThunk(
   "authenticationSlice/verifyUserApiCall",
-  async (_, { rejectWithValue }) => {
+  async (page, { rejectWithValue }) => {
     try {
-      const result = await axios.get(
-        `${process.env.BASE_URL}/userVerification`,
-        {
-          withCredentials: true,
-        }
-      );
+      const result = await axios.get(`${BASE_URL}/userVerification`, {
+        withCredentials: true,
+      });
       return result.data.data;
     } catch (error) {
-      toast.error(error.response.data.message || "Failed to fetch user info");
-      return rejectWithValue();
+      if (page === "entry") throw error;
+      else {
+        return rejectWithValue(
+          error.response.data.message || "Failed to fetch user info"
+        );
+      }
     }
   }
 );
-
 const authenticationSlice = createSlice({
   name: "authenticationSlice",
   initialState: {
@@ -67,6 +66,7 @@ const authenticationSlice = createSlice({
     userInfo: null,
     error: null,
     loading: false,
+    status: "pending",
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -78,10 +78,13 @@ const authenticationSlice = createSlice({
         state.loading = false;
         state.isLoggedIn = true;
         state.userInfo = action.payload;
+        state.status = "success";
+
         toast.success("Login successful");
       })
       .addCase(loginApiCall.rejected, (state, action) => {
         state.loading = false;
+        state.status = "failed";
         state.error = action.payload || action.error.message;
         toast.error(action.payload);
       })
@@ -91,11 +94,13 @@ const authenticationSlice = createSlice({
       .addCase(signupApiCall.fulfilled, (state, action) => {
         state.loading = false;
         state.isLoggedIn = true;
+        state.status = "success";
         state.userInfo = action.payload;
         toast.success("Signup successful");
       })
       .addCase(signupApiCall.rejected, (state, action) => {
         state.loading = false;
+        state.status = "failed";
         state.error = action.payload || action.error.message;
         toast.error(action.payload);
       })
@@ -105,26 +110,32 @@ const authenticationSlice = createSlice({
       .addCase(logoutApiCall.fulfilled, (state) => {
         state.loading = false;
         state.isLoggedIn = false;
+        state.status = "failed";
         state.userInfo = null;
         toast.success("Logout successful");
       })
       .addCase(logoutApiCall.rejected, (state, action) => {
         state.loading = false;
+        state.status = "success";
         state.error = action.error.message;
         toast.error("Logout failed");
       })
       .addCase(verifyUserApiCall.pending, (state) => {
         state.loading = true;
+        state.status = "pending";
       })
       .addCase(verifyUserApiCall.fulfilled, (state, action) => {
         state.loading = false;
         state.isLoggedIn = true;
+        state.status = "success";
         state.userInfo = action.payload;
+        toast.success("User info Fetched Successfully");
       })
       .addCase(verifyUserApiCall.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
-        toast.error("Failed to fetch user info");
+        state.status = "failed";
+        state.error = action.payload || action.error.message;
+        toast.error(action.payload);
       });
   },
 });

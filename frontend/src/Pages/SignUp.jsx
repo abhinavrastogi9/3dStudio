@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Box } from "lucide-react";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { signupApiCall } from "../Store/userAuthentication/authenticationSlice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 export default function signUp() {
   const [formData, setFormData] = React.useState({
     email: "",
@@ -22,6 +22,10 @@ export default function signUp() {
     firstName: "",
     lastName: "",
   });
+  const { isLoggedIn, status } = useSelector(
+    (state) => state.authenticationSlice
+  );
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const dispatch = useDispatch();
@@ -35,6 +39,11 @@ export default function signUp() {
     event.preventDefault();
     dispatch(signupApiCall(formData));
   }
+  useEffect(() => {
+    if (isLoggedIn && status === "success") {
+      navigate("/dashboard");
+    }
+  }, [status, isLoggedIn]);
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">

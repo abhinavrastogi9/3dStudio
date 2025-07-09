@@ -11,9 +11,10 @@ import SignIn from "./Pages/SignIn.jsx";
 import SignUp from "./Pages/SignUp.jsx";
 import UploadFile from "./Pages/UploadFile.jsx";
 import DashBoard from "./Pages/DashBoard.jsx";
-import path from "path";
 import EntryLayout from "./Layout/EntryLayout.jsx";
 import NotFoundPage from "./Pages/NotFoundPage.jsx";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -58,9 +59,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <Provider store={store}>
+      <ToastContainer />
       <RouterProvider router={router} />
     </Provider>
-  </StrictMode>
 );

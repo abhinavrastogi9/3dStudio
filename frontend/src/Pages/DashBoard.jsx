@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Upload, User } from "lucide-react";
 import { ObjectPreviewCard } from "@/components/ui/ObjectPreviewCard.jsx";
 import { Link } from "react-router-dom";
-
 const mockObjects = [
   {
     id: "1",

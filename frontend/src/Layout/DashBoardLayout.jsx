@@ -1,22 +1,40 @@
 import "@/App.css";
 import { Outlet } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { verifyUserApiCall } from "../Store/userAuthentication/authenticationSlice.js";
 function DashBoardLayout() {
-const {isLoagegIN}
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoggedIn, status } = useSelector(
+    (state) => state.authenticationSlice
+  );
+  useEffect(() => {
+    if (!isLoggedIn) {
+      const page="dashboard"
+      dispatch(verifyUserApiCall(page));
+    }
+  }, [isLoggedIn]);
+  useEffect(() => {
+    if (status === "failed") {
+      navigate("/signin");
+    }
+  }, [status]);
   return (
     <>
-      <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Outlet />
-        <ToastContainer />
-      </div>
-      <Footer />
+      {isLoggedIn && status === "success" && (
+        <>
+          <Header />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Outlet />
+          </div>
+          <Footer />
+        </>
+      )}
     </>
   );
 }

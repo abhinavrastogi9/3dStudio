@@ -158,7 +158,6 @@ const userLogout = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new apiResponse(201, {}, "user logged out successfully"));
-  res.status(200).cookie();
 });
 
 // Export all user controller functions

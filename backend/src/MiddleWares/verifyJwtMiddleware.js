@@ -10,12 +10,10 @@ const verifyJwt = asyncHandler(async (req, res, next) => {
     const cookies = req?.cookies;
     const accessToken = cookies?.accessToken;
     const refreshToken = cookies?.refreshToken;
-
     // Check if both tokens are present
     if (!refreshToken || !accessToken) {
       throw new apiError(401, "Unauthorized request");
     }
-
     // Verify access token using secret
     const decodedAccessToken = jwt.verify(
       accessToken,

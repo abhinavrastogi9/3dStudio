@@ -4,6 +4,6 @@ import verifyJwt from "../MiddleWares/verifyJwtMiddleware.js";
 const userRouter = Router();
 userRouter.post("/signup",userRegistration);
 userRouter.post("/login", userLogin);
-userRouter.get("/userVerification", verifyJwt,verifyUser);
-userRouter.get("/logout", verifyJwt,userLogout);
+userRouter.get("/userVerification",verifyJwt,verifyUser);
+userRouter.get("/logout",verifyJwt,userLogout);
 export default userRouter;
