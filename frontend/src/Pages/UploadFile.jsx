@@ -3,7 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadFileApiCall } from "../Store/fileApiCalls/fileApiSlice";
+
 export default function UploadFile() {
+  const dispatch = useDispatch();
+  const { uploading } = useSelector((state) => state.fileApiSlice);
   const [dragActive, setDragActive] = useState(false);
   const handleDrag = useCallback((event) => {
     event.preventDefault();
@@ -25,8 +30,10 @@ export default function UploadFile() {
       handleFiles(e.target.files[0]);
     }
   }
-  function handleFiles(file) {
-    console.log(file.name);
+  function handleFiles(fileDetails) {
+    const formData = new FormData();
+    formData.append("file", fileDetails);
+    dispatch(uploadFileApiCall(formData));
   }
   return (
     <>
@@ -45,24 +52,32 @@ export default function UploadFile() {
               onDragOver={handleDrag}
               onDrop={handleDrop}
             >
-              <input
-                type="file"
-                accept=".obj,.glb"
-                onChange={handleChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-
+              {!uploading && (
+                <input
+                  type="file"
+                  accept=".obj,.glb"
+                  onChange={handleChange}
+                  className="absolute inset-0  w-full h-full opacity-0 cursor-pointer"
+                />
+              )}
               <Upload className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 {dragActive ? "Drop your files here" : "Upload 3D Model Files"}
               </h3>
-              <p className="text-gray-600 mb-4">
-                Drag and drop your files here, or click to browse
-              </p>
+              {uploading ? (
+                <div className="text-gray-600 mb-4">Uploading ....</div>
+              ) : (
+                <p className="text-gray-600 mb-4">
+                  Drag and drop your files here, or click to browse
+                </p>
+              )}
               <p className="text-sm text-gray-500 mb-6">
                 Supported formats: OBJ, GLB
               </p>
-              <Button className="bg-gray-900 hover:bg-gray-800">
+              <Button
+                className="bg-gray-900 hover:bg-gray-800"
+                disabled={uploading}
+              >
                 <Upload className="h-4 w-4 mr-2" />
                 Choose Files
               </Button>

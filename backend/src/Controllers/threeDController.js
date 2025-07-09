@@ -10,14 +10,12 @@ const uploadThreeDFile = asyncHandler(async (req, res) => {
   const { userId } = req.user;
   const { location, originalname, mimetype, key } = req?.file;
   let fileType;
-
   // Validate file upload fields
   if (!location || !originalname || !mimetype || !key) {
     throw new apiError(400, "File upload failed");
   }
-
   // Determine file type based on mimetype
-  if (mimetype === "model/obj") {
+  if (mimetype === "model/obj" || mimetype === "application/x-tgif") {
     fileType = "obj";
   } else if (mimetype === "model/gltf-binary") {
     fileType = "glb";
@@ -61,12 +59,14 @@ const getAllThreeDFiles = asyncHandler(async (req, res) => {
 
   // Find all files uploaded by the user
   const files = await ThreeDFile.find({ uploadedBy: userId });
-  if (!files ) {
+  if (!files) {
     throw new apiError(404, "No files found for this user");
   }
 
   // Respond with files
-  res.status(200).json(new apiResponse(200, files, "Files retrieved successfully"));
+  res
+    .status(200)
+    .json(new apiResponse(200, files, "Files retrieved successfully"));
 });
 
 // Controller to delete a 3D file by its ID
@@ -102,23 +102,29 @@ const getThreeDFileById = asyncHandler(async (req, res) => {
   if (!fileId) {
     throw new apiError(400, "File ID is required");
   }
-
+  if (fileId.length != 24 ) {
+    throw new apiError(404, "File not found");
+  }
   // Find file by ID
   const file = await ThreeDFile.findById(fileId);
   if (!file) {
     throw new apiError(404, "File not found");
   }
-
   // Respond with file data
-  res.status(200).json(new apiResponse(200, file, "File retrieved successfully"));
+  res
+    .status(200)
+    .json(new apiResponse(200, file, "File retrieved successfully"));
 });
-const updateFile= asyncHandler(async (req, res) => {
+const updateFile = asyncHandler(async (req, res) => {
   const { fileId } = req.params;
   const { environmentPreset, cameraState } = req.body;
 
   // Validate input
   if (!fileId || !environmentPreset || !cameraState) {
-    throw new apiError(400, "File ID, environment preset, and camera state are required");
+    throw new apiError(
+      400,
+      "File ID, environment preset, and camera state are required"
+    );
   }
 
   // Find file by ID
@@ -134,7 +140,15 @@ const updateFile= asyncHandler(async (req, res) => {
   const updatedFile = await file.save();
 
   // Respond with updated file data
-  res.status(200).json(new apiResponse(200, updatedFile, "File updated successfully"));
+  res
+    .status(200)
+    .json(new apiResponse(200, updatedFile, "File updated successfully"));
 });
 // Export all controller functions
-export  {uploadThreeDFile, getAllThreeDFiles, deleteThreeDFile, getThreeDFileById, updateFile};
+export {
+  uploadThreeDFile,
+  getAllThreeDFiles,
+  deleteThreeDFile,
+  getThreeDFileById,
+  updateFile,
+};

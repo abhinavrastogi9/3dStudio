@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <DashBoard />,
       },
       {
-        path: "/dashboard/model",
+        path: "/dashboard/model/:_id",
         element: <ModelViewer />,
       },
       {
