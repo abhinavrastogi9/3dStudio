@@ -63,8 +63,7 @@ npm run dev
 npm run dev
 ```
 
-
- ### 📦 Tech Stack
+### 📦 Tech Stack
 
 Frontend: React + Vite + Redux Toolkit
 
