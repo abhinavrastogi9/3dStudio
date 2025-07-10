@@ -17,30 +17,31 @@ export default function DashBoard() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Welcome back, {userInfo?.firstName}!
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Manage and visualize your 3D models
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg">
-              <User className="h-4 w-4 text-gray-600" />
-              <span className="text-sm text-gray-700">{userInfo?.email}</span>
-            </div>
-            <Link to="/dashboard/uploadfile">
-              <Button className="gap-2 cursor-pointer bg-gray-900 hover:bg-gray-800">
-                <Upload className="h-4 w-4" />
-                Upload Model
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+   <header className="bg-white border-b border-gray-200 px-6 py-4 flex-col justify-start">
+  <div className="flex flex-col md:flex-row justify-between md:items-center items-start gap-4">
+    <div>
+      <h1 className="text-2xl font-bold text-gray-900">
+        Welcome back, {userInfo?.firstName}!
+      </h1>
+      <p className="text-gray-600 mt-1">
+        Manage and visualize your 3D models
+      </p>
+    </div>
+
+    <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
+      <div className="md:flex text-wrap items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg hidden">
+        <User className="h-4 w-4 text-gray-600" />
+        <span className="text-sm text-wrap text-gray-700 ">{userInfo?.email}</span>
+      </div>
+      <Link to="/dashboard/uploadfile">
+        <Button className="gap-2 cursor-pointer bg-gray-900 hover:bg-gray-800">
+          <Upload className="h-4 w-4" />
+          Upload Model
+        </Button>
+      </Link>
+    </div>
+  </div>
+</header>
 
       {/* Main Content */}
       <div
