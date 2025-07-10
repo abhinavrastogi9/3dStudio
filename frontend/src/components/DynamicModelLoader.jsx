@@ -4,13 +4,12 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { Box3, Vector3 } from "three";
 
-const DynamicModelLoader = ({ publicUrl, type = "glb" }) => {
+const DynamicModelLoader = ({ publicUrl, type  }) => {
   const modelRef = useRef();
-
+ if(type !=="obj" && type!=="glb") return ;
   const model = useLoader(type === "obj" ? OBJLoader : GLTFLoader, publicUrl);
   useEffect(() => {
     if (!modelRef.current) return;
-
     const object = type === "glb" ? model.scene : model;
     const box = new Box3().setFromObject(object);
     const center = new Vector3();

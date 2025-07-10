@@ -75,10 +75,10 @@ const ModelViewer = () => {
   useEffect(() => {
     if (fileData?.cameraState) {
       setInitalcameraState(fileData?.cameraState);
-      setEnvironment(fileData?.environmentPreset);
-      setPublicUrl(fileData?.publicUrl);
-      setFileType(fileData?.fileType);
     }
+    setEnvironment(fileData?.environmentPreset);
+    setPublicUrl(fileData?.publicUrl);
+    setFileType(fileData?.fileType);
   }, [fileData]);
   return (
     <>
@@ -109,7 +109,9 @@ const ModelViewer = () => {
                 <pointLight position={[0, 5, 5]} intensity={0.8} />
                 <hemisphereLight args={["#ffffff", "#444444", 0.6]} />
                 <Environment preset={environment} background />
-                <DynamicModelLoader publicUrl={publicUrl} type={fileType} />
+                {publicUrl && (fileType === "glb" || fileType === "obj") && (
+                  <DynamicModelLoader publicUrl={publicUrl} type={fileType} />
+                )}
                 <OrbitControls
                   enablePan
                   enableZoom
