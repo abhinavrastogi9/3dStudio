@@ -41,7 +41,6 @@ export default function SignIn() {
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedIn && status === "success") {
-      console.log("navgate");
       navigate("/dashboard");
     }
   }, [status, isLoggedIn]);

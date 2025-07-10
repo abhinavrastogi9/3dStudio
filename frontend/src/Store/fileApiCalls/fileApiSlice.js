@@ -109,7 +109,6 @@ const fileApiSlice = createSlice({
         state.uploading = true;
       })
       .addCase(uploadFileApiCall.fulfilled, (state, action) => {
-        console.log("uploadFileApiCall fulfilled", action.payload);
         state.uploading = false;
         state.fileData = action.payload;
         toast.success("File uploaded successfully");
