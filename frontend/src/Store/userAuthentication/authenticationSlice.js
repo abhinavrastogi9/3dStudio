@@ -6,7 +6,7 @@ export const loginApiCall = createAsyncThunk(
   "authenticationSlice/loginApiCall",
   async (loginData, { rejectWithValue }) => {
     try {
-      const result = await axios.post(`${BASE_URL}/login`, loginData, {
+      const result = await axios.post(`${BASE_URL}/user/login`, loginData, {
         withCredentials: true,
       });
       return result.data.data;
@@ -19,7 +19,7 @@ export const signupApiCall = createAsyncThunk(
   "authenticationSlice/signupApiCall",
   async (formData, { rejectWithValue }) => {
     try {
-      const result = await axios.post(`${BASE_URL}/signup`, formData, {
+      const result = await axios.post(`${BASE_URL}/user/signup`, formData, {
         withCredentials: true,
       });
       return result.data.data;
@@ -32,7 +32,7 @@ export const logoutApiCall = createAsyncThunk(
   "authenticationSlice/logoutApiCall",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await axios.get(`${BASE_URL}/logout`, {
+      const result = await axios.get(`${BASE_URL}/user/logout`, {
         withCredentials: true,
       });
       return result.data.data;
@@ -45,7 +45,7 @@ export const verifyUserApiCall = createAsyncThunk(
   "authenticationSlice/verifyUserApiCall",
   async (page, { rejectWithValue }) => {
     try {
-      const result = await axios.get(`${BASE_URL}/userVerification`, {
+      const result = await axios.get(`${BASE_URL}/user/userVerification`, {
         withCredentials: true,
       });
       return result.data.data;

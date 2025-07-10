@@ -32,6 +32,7 @@ const options = {
   httpOnly: true,
   secure: isProduction, // Secure cookies in production
   sameSite: isProduction ? "None" : "Lax", // Adjust for cross-domain in production
+  maxAge: 24*60*60*1000
 };
 
 // Controller for user registration

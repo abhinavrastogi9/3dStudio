@@ -18,6 +18,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/",userRouter)
-app.use("/file",ThreeDFileRouter)
+app.use("/api/user",userRouter)
+app.use("/api/file",ThreeDFileRouter)
 app.use(errorHandler);
