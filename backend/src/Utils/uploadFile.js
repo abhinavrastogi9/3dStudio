@@ -6,9 +6,11 @@ import { S3Client } from "@aws-sdk/client-s3";
 
 // Initialize AWS S3 client with credentials from environment variables
 export const s3 = new S3Client({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
   region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  },
 });
 
 // Configure multer to upload files directly to S3 using multer-s3 storage engine
