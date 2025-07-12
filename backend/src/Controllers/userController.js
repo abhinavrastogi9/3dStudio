@@ -19,7 +19,7 @@ async function generateTokens(userId) {
     // Handle errors during token generation
     throw new apiError(
       500,
-      "Something went wrong while generating access and referesh tokens"
+      "Something went wrong while generating access and referesh tokenst"
     );
   }
 }
@@ -31,7 +31,7 @@ const options = {
   path: "/",
   httpOnly: true,
   secure: isProduction, // Secure cookies in production
-  sameSite: isProduction ? "None" : "Lax", // Adjust for cross-domain in production
+  sameSite: isProduction ? "None" : "Lax", 
   maxAge: 24*60*60*1000
 };
 

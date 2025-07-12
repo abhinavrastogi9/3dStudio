@@ -16,9 +16,6 @@ import { useInView } from "react-intersection-observer";
 import { deleteFileApiCall } from "../Store/fileApiCalls/fileApiSlice.js";
 import { useDispatch } from "react-redux";
 
-
-
-
 const DynamicModelLoader = lazy(() => import("./DynamicModelLoader.jsx"));
 export function ObjectPreviewCard({ file }) {
   const { ref, inView } = useInView({

@@ -13,7 +13,7 @@ export const s3 = new S3Client({
   },
 });
 
-// Configure multer to upload files directly to S3 using multer-s3 storage engine
+// Configure multer to upload files directly to S3 using multer-s3 storage 
 const uploadFile = multer({
   storage: multerS3({
     s3: s3,
